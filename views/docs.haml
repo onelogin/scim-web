@@ -1,0 +1,47 @@
+.row.section
+  %header
+    Create resource
+    .endpoint /Users
+    .http-method
+      POST
+  .content
+    .row
+      .one.half
+        The REST endpoint to create the User resource says:
+        %blockquote
+          Successful Resource creation is indicated with a 201 ("Created") response code. Upon successful creation, the response body MUST contain the newly created Resource. Since the server is free to alter and/or ignore POSTed content, returning the full representation can be useful to the client, enabling it to correlate the client and server views of the new Resource. When a Resource is created, its URI must be returned in the response Location header.
+          If the Service Provider determines creation of the requested Resource conflicts with existing resources; e.g., a User Resource with a duplicate userName, the Service Provider MUST return a 409 error and SHOULD indicate the conflicting attribute(s) in the body of the response.
+      .one.half
+
+
+.row.section
+  %header
+    Lookup Resource
+    .endpoint /Users
+    .http-method
+      GET
+  .content
+
+.row.section
+  %header
+    Update Resource
+    .endpoint /Users/:id
+    .http-method
+      PUT
+  .content
+
+.row.section
+  %header
+    Remove Resource
+    .endpoint /Users/:id
+    .http-method
+      DELETE
+  .content
+
+.row.section
+  %header
+    List Resources
+    .endpoint /Users
+    .http-method
+      GET
+  .content

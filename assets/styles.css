@@ -1,0 +1,39 @@
+header.main{
+  background-color: #dcdfe0;
+  color: white;
+  border-bottom: 100px;
+}
+
+header.main h1 {
+  font-size: 40px;
+  line-height: 80px;
+  background: transparent url(/images/logo.png) 0 0 no-repeat;
+  padding-left: 84px;
+}
+
+h1 {
+  font: 32px/1 Helvetica, Arial, sans-serif;
+}
+
+body .container{
+  padding-top: 50px;
+}
+
+.section{
+  margin-bottom: 25px;
+}
+.section header{
+  background-color: #ccc;
+  margin-bottom: 5px;
+  padding: 5px;
+  color: white;
+}
+
+
+.section header .http-method, .section header .endpoint{
+  display: inline-block;
+}
+
+p{
+  font: 13px/1.4 Helvetica, Arial, sans-serif;
+}

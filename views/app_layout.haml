@@ -1,0 +1,28 @@
+!!!
+%html
+  %head
+    %title OneLogin SCIM
+    %meta(charset="utf-8")
+
+    <!-- Modernizr -->
+    <script src="/vendor/js/modernizr-2.6.2.min.js"></script>
+    <!-- framework css -->
+    <!--[if gt IE 9]><!-->
+    <link type="text/css" rel="stylesheet" href="/vendor/css/groundwork.css">
+    <!--<![endif]-->
+    <!--[if lte IE 9]>
+    <link type="text/css" rel="stylesheet" href="/vendor/css/groundwork-ie.css">
+    <![endif]-->`
+    %link(rel="stylesheet" href="/styles.css")
+  %body
+    %header.padded.main
+      .container
+        .row
+          .one.fourth
+            %img.logo(src='/images/logo_default.png')
+          .three.fourth
+            %h1.header OneLogin Partner Provisioning Protocol
+    .container
+      = yield
+    <script type="text/javascript" src="/vendor/js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/vendor/js/groundwork.all.js"></script>
