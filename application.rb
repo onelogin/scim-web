@@ -21,3 +21,8 @@ end
 
 
 set :public_folder, 'assets'
+
+
+get '/styles.css' do
+  scss :styles
+end

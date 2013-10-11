@@ -1,0 +1,79 @@
+header.main{
+  background-color: #dcdfe0;
+  color: white;
+  border-bottom: 100px;
+  h1 {
+    font-size: 40px;
+    line-height: 80px;
+    background: transparent url(/images/logo.png) 0 0 no-repeat;
+    padding-left: 84px;
+  }
+}
+
+h1 {
+  font: 32px/1 Helvetica, Arial, sans-serif;
+}
+
+body .container{
+  padding-top: 50px;
+  padding-bottom: 50px;
+
+  nav{
+  margin-bottom: 2em;
+  }
+
+}
+
+
+.section{
+  margin-bottom: 25px;
+
+  header{
+    background-color: #ccc;
+    margin-bottom: 5px;
+    padding: 5px;
+    color: white;
+
+    .http-method, .endpoint{
+      display: inline-block;
+    }
+  }
+}
+
+
+.section .content{
+  blockquote{
+    margin-top: 1em;
+  }
+
+  .http-request-response-doc{
+    padding: 1em;
+    word-wrap: break-word;
+  }
+
+  span.request, span.response{
+    color: #00b5cb;
+  }
+
+  .subsection{
+    margin-top: 25px;
+    padding: 10px;
+    font-size: 16px;
+  }
+}
+
+
+
+#testing-harness{
+  p{
+    font: 300 1.33em/2 "proxima-nova",sans-serif;
+  }
+
+  h1{
+    font-family: "proxima-nova",sans-serif;
+  }
+
+  .box{
+    margin-top: 2em;
+  }
+}
