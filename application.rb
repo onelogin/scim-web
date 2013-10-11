@@ -8,9 +8,9 @@ get '/api/0.1/docs' do
   haml :docs, :layout => :app_layout
 end
 
-get '/:name' do
-  name = params[:name]
-  "Hello, #{name}"
+
+get '/testing_harness' do
+  haml :testing_harness, :layout => :app_layout
 end
 
 get '/what/time/is/it/in/:number/hours' do

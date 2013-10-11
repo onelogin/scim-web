@@ -1,0 +1,30 @@
+.row.section
+  %header
+    Remove Resource
+    .endpoint /Users/:id
+    .http-method
+      DELETE
+  .content
+    .row
+      .one.half
+        %blockquote
+          Consumers request Resource removal via DELETE. Service Providers MAY choose not to permanently delete the Resource, but MUST return a 404 error code for all operations associated with the previously deleted Id. Service Providers MUST also omit the Resource from future query results. In addition the Service Provider MUST not consider the deleted resource in conflict calculation. For example if a User resource is deleted, a CREATE request for a User resource with the same userName as the previously deleted resource should not fail with a 409 error due to userName conflict.
+        .subsection.error-bg
+          %h2 Resource Not Found
+          %p= "...Service Providers MAY choose not to permanently delete the Resource, but MUST return a 404 error code for all operations associated with the previously deleted Id."
+
+      .one.half.http-request-response-doc
+        %span.request REQUEST
+        :plain
+          <pre>
+            DELETE /Users/2819c223-7f76-453a-919d-413861904646
+            Host: example.com
+            Authorization: Bearer h480djs93hd8
+            If-Match: W/"c310cd84f0281b7"
+          </pre>
+        %span.response
+          RESPONSE
+        :plain
+          <pre>
+            HTTP/1.1 200 OK
+          </pre>

@@ -17,8 +17,13 @@ h1 {
 
 body .container{
   padding-top: 50px;
+  padding-bottom: 50px;
 }
 
+
+body .container nav{
+  margin-bottom: 2em;
+}
 .section{
   margin-bottom: 25px;
 }
@@ -30,10 +35,40 @@ body .container{
 }
 
 
+.section .content blockquote{
+  margin-top: 1em;
+}
 .section header .http-method, .section header .endpoint{
   display: inline-block;
 }
 
-p{
-  font: 13px/1.4 Helvetica, Arial, sans-serif;
+.section .content .http-request-response-doc{
+  padding: 1em;
+  word-wrap: break-word;
+}
+
+.section .content .http-request-response-doc span.request{
+    color: #00b5cb;
+}
+
+.section .content .http-request-response-doc span.response{
+    color: #00b5cb;
+}
+
+.section .content .subsection{
+  margin-top: 25px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+#testing-harness p{
+  font: 300 1.33em/2 "proxima-nova",sans-serif;
+}
+
+#testing-harness h1{
+  font-family: "proxima-nova",sans-serif;
+}
+
+#testing-harness .box{
+  margin-top: 2em;
 }

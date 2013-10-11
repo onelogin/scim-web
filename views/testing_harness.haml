@@ -1,0 +1,34 @@
+#testing-harness
+  %h1 Testing Harness
+  %p
+    Onelogin's testing harness helps you get your API diagnosis fast. You will only need the following elements:
+
+  %ol.list
+    %li Your oauth bearer token
+    %li Your API's URL
+    %li A YML file including the users for: create/update
+
+  .box
+    %h3 Introduce your oauth bearer token
+    %p OAuth 2 bearer token is the suggested SCIM's auth strategy
+    .row.gap-bottom
+      <input placeholder="Your oauth token" name='oauth_token'>
+  .box
+    %h3 Introduce your api BASE URL
+    %p
+      Base URL is the path to follow to your public api, we just add the necessary SCIM endpoints to start testing against it.
+      %br
+      For example, if your API endpoint for the user Resource is: https://someexample.com/api/v1/public/Users, input
+      %br
+      %b https://someexample.com/api/v1/public
+      in the box below
+
+    .row.gap-bottom
+      <input placeholder="Your API Base URL" name='base_url'>
+  .box
+    %h3 Introduce your fixture users
+    %p
+      Because different partner's systems have their own specs on what a user needs to be valid, upload here a YAML file
+      containing the needed user attributes.
+    .row.gap-bottom
+      <input type="file" placeholder="" name='user_fixture'>

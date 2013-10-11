@@ -1,0 +1,69 @@
+.row.section
+  %header
+    Create resource
+    .endpoint /Users
+    .http-method
+      POST
+  .content
+    .row
+      .one.half
+        %blockquote
+          Successful Resource creation is indicated with a 201 ("Created") response code. Upon successful creation, the response body MUST contain the newly created Resource. Since the server is free to alter and/or ignore POSTed content, returning the full representation can be useful to the client, enabling it to correlate the client and server views of the new Resource. When a Resource is created, its URI must be returned in the response Location header.
+
+        .subsection.error-bg
+          %h2 Name Conflict
+          %p
+            If the Service Provider determines creation of the requested Resource conflicts with existing resources; e.g., a User Resource with a duplicate userName, the Service Provider MUST return a 409 error and SHOULD indicate the conflicting attribute(s) in the body of the response.
+
+      .one.half.http-request-response-doc
+        %span.request REQUEST
+        :plain
+          <pre>
+            POST /Users  HTTP/1.1
+            Host: example.com
+            Accept: application/json
+            Content-Type: application/json
+            Authorization: Bearer h480djs93hd8
+            Content-Length: ...
+
+          </pre>
+        :plain
+          <pre>
+            {
+              "userName":"bjensen",
+              "externalId":"bjensen",
+              "name":{
+                "formatted":"Ms. Barbara J Jensen III",
+                "familyName":"Jensen",
+                "givenName":"Barbara"
+              }
+            }
+          </pre>
+        %span.response
+          RESPONSE
+        :plain
+          <pre>
+            HTTP/1.1 201 Created
+            Content-Type: application/json
+            Location: https://example.com/v1/Users/2819c223-7f76-453a-919d-413861904646
+            ETag: W/"e180ee84f0671b1"
+
+            {
+              "schemas":["urn:scim:schemas:core:2.0:User"],
+              "id":"2819c223-7f76-453a-919d-413861904646",
+              "externalId":"bjensen",
+              "meta":{
+                "resourceType":"User",
+                "created":"2011-08-01T21:32:44.882Z",
+                "lastModified":"2011-08-01T21:32:44.882Z",
+                "location":"https://example.com/v1/Users/2819c223-7f76-453a-919d-413861904646",
+                "version":"W\/\"e180ee84f0671b1\""
+              },
+              "name":{
+                "formatted":"Ms. Barbara J Jensen III",
+                "familyName":"Jensen",
+                "givenName":"Barbara"
+              },
+              "userName":"bjensen"
+          }
+          </pre>

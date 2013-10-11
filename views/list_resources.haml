@@ -1,0 +1,49 @@
+.row.section
+  %header
+    List Resources
+    .endpoint /Users
+    .http-method
+      GET
+  .content
+    .row
+      .one.half
+        %blockquote
+          SCIM defines a standard set of operations that can be used to filter, sort, and paginate response results. The operations are specified by adding query parameters to the Resource's endpoint. Service Providers MAY support additional query parameters not specified here, and Providers SHOULD ignore any query parameters they don't recognize.
+          The example on the right returns the userName for all Users: 
+        .subsection.info-bg
+          %h2 Filtering
+          %p
+            Filtering is OPTIONAL. Consumers may request a subset of Resources by specifying the 'filter' URL query parameter containing a filter expression. When specified only those Resources matching the filter expression SHALL be returned. The expression language that is used in the filter parameter supports references to attributes and literals. The literal values can be strings enclosed in double quotes, numbers, date times enclosed in double quotes, and Boolean values; i.e., true or false. String literals MUST be valid JSON strings.
+            The attribute name and attribute operator are case insensitive. For example, the following two expressions will evaluate to the same logical value:
+            filter=userName Eq "john"
+            filter=Username eq "john"
+
+      .one.half.http-request-response-doc
+        %span.request REQUEST
+        :plain
+          <pre>
+            GET /Users?attributes=userName
+            Host: example.com
+            Accept: application/json
+            Authorization: Bearer h480djs93hd8
+          </pre>
+        %span.response
+          RESPONSE
+        :plain
+          <pre>
+            HTTP/1.1 200 OK
+            Content-Type: application/json
+
+            {
+              "totalResults":2,
+              "schemas":["urn:scim:schemas:core:1.0"],
+              "Resources":[
+                {
+                  "userName":"bjensen"
+                },
+                {
+                  "userName":"jsmith"
+                }
+              ]
+            }
+          </pre>

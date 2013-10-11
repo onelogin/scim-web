@@ -1,0 +1,68 @@
+.row.section
+  %header
+    Lookup resource
+    .endpoint /Users/id.json
+    .http-method
+      GET
+  .content
+    .row
+      .one.half
+        %blockquote
+          To retrieve a known Resource, clients send GET requests to the Resource endpoint; e.g., /Users/{id}.
+          If the Resource exists the server responds with a status code of 200 and includes the result in the body of the response.
+          The example on the right retrieves a single User via the /Users endpoint.
+        .subsection.error-bg
+          %h2 Resource Not Found
+          %p
+            If the Service Provider can not find any resource with the sent id, it must return a 404 status code.
+      .one.half.http-request-response-doc
+        %span.request REQUEST
+        :plain
+          <pre>
+            GET /Users/2819c223-7f76-453a-919d-413861904646
+            Host: example.com
+            Accept: application/json
+            Authorization: Bearer h480djs93hd8
+          </pre>
+        %span.response
+          RESPONSE
+        :plain
+          <pre>
+            HTTP/1.1 200 OK
+            Content-Type: application/json
+            Location: https://example.com/v1/Users/2819c223-7f76-453a-919d-413861904646
+            ETag: W/"f250dd84f0671c3"
+
+          </pre>
+        :plain
+          <pre>
+            {
+              "schemas":["urn:scim:schemas:core:1.0"],
+              "id":"2819c223-7f76-453a-919d-413861904646,
+              "externalId":"bjensen",
+              "meta":{
+                "created":"2011-08-01T18:29:49.793Z",
+                "lastModified":"2011-08-01T18:29:49.793Z",
+                "location":"https://example.com/v1/Users/2819c223-7f76-453a-919d-413861904646",
+                "version":"W\/\"f250dd84f0671c3\""
+              },
+              "name":{
+                "formatted":"Ms. Barbara J Jensen III",
+                "familyName":"Jensen",
+                "givenName":"Barbara"
+              },
+              "userName":"bjensen",
+              "phoneNumbers":[
+                {
+                  "value":"555-555-8377",
+                  "type":"work"
+                }
+              ],
+              "emails":[
+                {
+                  "value":"bjensen@example.com",
+                  "type":"work"
+                }
+              ]
+            }
+          </pre>
