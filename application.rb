@@ -1,7 +1,8 @@
 require 'rubygems'
 require 'sinatra'
-require 'sinatra/reloader' if development?
 require 'haml'
+require 'sinatra/reloader' if development?
+require 'debugger' if development?
 
 
 get '/api/0.1/docs' do
@@ -13,10 +14,8 @@ get '/testing_harness' do
   haml :testing_harness, :layout => :app_layout
 end
 
-get '/what/time/is/it/in/:number/hours' do
-  number = params[:number].to_i
-  time = Time.now + number * 3600
-  "The time in #{number} hours will be #{time.strftime('%I:%M %p')}"
+post '/check_api' do
+  puts "Hello"
 end
 
 
