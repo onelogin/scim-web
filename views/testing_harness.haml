@@ -13,7 +13,9 @@
       %h3 Introduce your oauth bearer token
       %p OAuth 2 bearer token is the suggested SCIM's auth strategy
       .row.gap-bottom
-        <input placeholder="Your oauth token" name='oauth_token'>
+        = render_error_message(@api_test, :token)
+        %p(class="#{ error_for?(@api_test, :token) ? 'invalid' : '' }")
+          <input placeholder="Your oauth token" name='token'>
     .box
       %h3 Introduce your api BASE URL
       %p
@@ -25,7 +27,9 @@
         in the box below
 
       .row.gap-bottom
-        <input placeholder="Your API Base URL" name='base_url'>
+        = render_error_message(@api_test, :base_url)
+        %p(class="#{ error_for?(@api_test, :base_url) ? 'invalid' : '' }")
+          <input placeholder="Your API Base URL" name='base_url'>
     .box
       %h3 Introduce your fixture users
       %p
@@ -52,5 +56,7 @@
               givenName:  'Ignasi A'
           </pre>
       .row.gap-bottom
-        <input type="file" placeholder="" name='user_fixture'>
+        = render_error_message(@api_test, :fixtures_file)
+        %p(class="#{ error_for?(@api_test, :fixtures_file) ? 'invalid' : '' }")
+          <input type="file"  name='fixtures_file'>
     %button.large.success(type='submit') Validate my API!
