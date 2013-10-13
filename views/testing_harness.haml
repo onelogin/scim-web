@@ -15,7 +15,7 @@
       .row.gap-bottom
         = render_error_message(@api_test, :token)
         %p(class="#{ error_for?(@api_test, :token) ? 'invalid' : '' }")
-          <input placeholder="Your oauth token" name='token'>
+          <input placeholder="Your oauth token" name='api_test[token]' value="#{@api_test.token}">
     .box
       %h3 Introduce your api BASE URL
       %p
@@ -29,7 +29,7 @@
       .row.gap-bottom
         = render_error_message(@api_test, :base_url)
         %p(class="#{ error_for?(@api_test, :base_url) ? 'invalid' : '' }")
-          <input placeholder="Your API Base URL" name='base_url'>
+          <input placeholder="Your API Base URL" name='api_test[base_url]' value="#{@api_test.base_url}">
     .box
       %h3 Introduce your fixture users
       %p
@@ -58,5 +58,5 @@
       .row.gap-bottom
         = render_error_message(@api_test, :fixtures_file)
         %p(class="#{ error_for?(@api_test, :fixtures_file) ? 'invalid' : '' }")
-          <input type="file"  name='fixtures_file'>
+          <input type="file"  name='api_test[fixtures_file]'>
     %button.large.success(type='submit') Validate my API!

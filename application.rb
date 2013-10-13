@@ -13,6 +13,38 @@ require_relative './helpers/view_helper.rb'
 
 helpers ApplicationHelper, ViewHelper
 
+set :public_folder, 'assets'
+
+# preprocess styles.scss with sass
+get('/styles.css') { scss :styles }
+
+not_found { haml :not_found }
+
+# FILTERS
+before do
+  case request_path(request)
+  when '/test/queued'
+    redirect_to_root unless http_referer_equals?('/testing_harness', request)
+  end
+end
+
+def redirect_to_root
+  redirect to('/')
+end
+
+def request_path(request)
+  request.env['REQUEST_PATH']
+end
+
+def http_referer_equals?(from, request)
+  referer = request.env['HTTP_REFERER']
+  url_scheme = request.env['rack.url_scheme']
+  host = request.env['SERVER_NAME']
+  port = request.env['SERVER_PORT']
+
+  "#{url_scheme}://#{host}:#{port}#{from}" == referer
+end
+
 get '/' do
   redirect to('/api/0.1/docs')
 end
@@ -28,7 +60,7 @@ get '/testing_harness' do
 end
 
 post '/check_api' do
-  @api_test = ApiTest.new(params)
+  @api_test = ApiTest.new(params[:api_test])
 
   if @api_test.can_be_performed?
     @api_test.perform
@@ -39,16 +71,6 @@ post '/check_api' do
 end
 
 get '/test/queued' do
-  haml :test_queued
+  haml :test_queued, :layout => :app_layout
 end
 
-set :public_folder, 'assets'
-
-
-get '/styles.css' do
-  scss :styles
-end
-
-not_found do
-  haml :not_found
-end
