@@ -3,5 +3,12 @@ gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'haml'
 gem 'sass'
-gem 'debugger'
-gem 'supermodel'
+gem "activerecord"
+gem "sinatra-activerecord"
+
+gem 'pg'
+
+group :development do
+  gem 'debugger'
+  gem 'tux'
+end

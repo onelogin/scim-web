@@ -1,17 +1,21 @@
 require 'rubygems'
 require 'sinatra'
 require 'haml'
-require 'supermodel'
 require 'yaml'
 require 'sinatra/reloader' if development?
+require "sinatra/activerecord"
+
 require 'debugger' if development?
 
 require_relative './models/api_test.rb'
 require_relative './helpers/application_helper.rb'
 require_relative './helpers/view_helper.rb'
+require_relative './helpers/request_helpers.rb'
 
 
-helpers ApplicationHelper, ViewHelper
+set :database, 'postgres://postgres:postgres@localhost/scim_dev'
+
+helpers ApplicationHelper, ViewHelper, RequestHelpers
 
 set :public_folder, 'assets'
 
@@ -32,18 +36,6 @@ def redirect_to_root
   redirect to('/')
 end
 
-def request_path(request)
-  request.env['REQUEST_PATH']
-end
-
-def http_referer_equals?(from, request)
-  referer = request.env['HTTP_REFERER']
-  url_scheme = request.env['rack.url_scheme']
-  host = request.env['SERVER_NAME']
-  port = request.env['SERVER_PORT']
-
-  "#{url_scheme}://#{host}:#{port}#{from}" == referer
-end
 
 get '/' do
   redirect to('/api/0.1/docs')
@@ -62,7 +54,7 @@ end
 post '/check_api' do
   @api_test = ApiTest.new(params[:api_test])
 
-  if @api_test.can_be_performed?
+  if @api_test.valid? && @api_test.can_be_performed?
     @api_test.perform
     redirect to('/test/queued')
   else
