@@ -4,6 +4,7 @@ require 'haml'
 require 'yaml'
 require 'sinatra/reloader' if development?
 require "sinatra/activerecord"
+require './environments'
 
 require 'debugger' if development?
 
@@ -13,7 +14,6 @@ require_relative './helpers/view_helper.rb'
 require_relative './helpers/request_helpers.rb'
 
 
-set :database, 'postgres://postgres:postgres@localhost/scim_dev'
 
 helpers ApplicationHelper, ViewHelper, RequestHelpers
 
