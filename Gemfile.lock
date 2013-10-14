@@ -28,6 +28,11 @@ GEM
       debugger-ruby_core_source (~> 1.2.3)
     debugger-linecache (1.2.0)
     debugger-ruby_core_source (1.2.3)
+    delayed_job (4.0.0)
+      activesupport (>= 3.0, < 4.1)
+    delayed_job_active_record (4.0.0)
+      activerecord (>= 3.0, < 4.1)
+      delayed_job (>= 3.0, < 4.1)
     haml (4.0.3)
       tilt
     i18n (0.6.5)
@@ -78,6 +83,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   debugger
+  delayed_job_active_record
   haml
   pg
   sass
