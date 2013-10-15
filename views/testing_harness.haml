@@ -52,9 +52,12 @@
 
             update:
               name:
-              familyName: 'Madrid'
-              givenName:  'Ignasi A'
+                familyName: 'Madrid'
+                givenName:  'Ignasi A'
           </pre>
+      %p
+        If you need more info about YAML, you can check the following
+        %a(href="http://yaml.org/YAML_for_ruby.html" target="_blank")reference
       .row.gap-bottom
         = render_error_message(@api_test, :fixtures_file)
         %p(class="#{ error_for?(@api_test, :fixtures_file) ? 'invalid' : '' }")
