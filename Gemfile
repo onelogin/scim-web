@@ -6,10 +6,10 @@ gem 'sass'
 gem "activerecord"
 gem "sinatra-activerecord"
 gem 'backgrounded'
+gem 'tux'
 
 gem 'pg'
 
 group :development do
   gem 'debugger'
-  gem 'tux'
 end
