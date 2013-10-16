@@ -59,6 +59,7 @@ post '/check_api' do
   @api_test = ApiTest.new(params[:api_test])
 
   if @api_test.valid? && @api_test.can_be_performed?
+    @api_test.save
     @api_test.perform
     redirect to('/test/queued')
   else
