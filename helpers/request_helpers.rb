@@ -5,7 +5,7 @@ module RequestHelpers
 
   def http_referer_equals?(from, request)
     referer = request.env['HTTP_REFERER']
-    puts "referrer: #{referrer}"
+    puts "referrer: #{referer}"
     url_scheme = request.env['rack.url_scheme']
     puts "url scheme: #{url_scheme}"
     host = request.env['SERVER_NAME']
