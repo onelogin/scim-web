@@ -8,9 +8,9 @@ require 'backgrounded'
 require 'sinatra/reloader' if development?
 require 'debugger' if development?
 
-require './config/environments'
-require './config/initializers/app'
-require './config/initializers/backgrounded'
+require './configuration/environments'
+require './configuration/initializers/app'
+require './configuration/initializers/backgrounded'
 
 
 require_relative './models/api_test.rb'
