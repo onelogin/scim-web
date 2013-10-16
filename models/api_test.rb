@@ -32,8 +32,12 @@ class ApiTest < ActiveRecord::Base
   end
 
   # call api_test.backgrounded.perform
-  def perform
-    #App.log.info "Processing!"
+  def test
+    tester = TestingHarness::Tester.new base_url, token,
+                                        :json_fixture => json_fixture,
+                                        :debug => false,
+                                        :report_filename => "reports/#{id}"
+    tester.backgrounded.execute
   end
 end
 

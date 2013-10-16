@@ -35,8 +35,6 @@ module TestingHarness
   end
 
   class Validity
-    attr_accessor :report
-
     def initialize(opts = {})
       path = opts[:filename] || 'reports/example'
       @writer = ReportWriter.new(path)
@@ -151,7 +149,14 @@ module TestingHarness
       def initialize(opts)
         @json_fixture = JSON.parse(opts[:json_fixture])
         @debug        = $stdout if opts[:debug]
-        @validator    = Validity.new
+        @validator    = Validity.new(:filename => opts[:report_filename])
+      end
+
+      def execute
+        test_create
+        test_lookup
+        test_update
+        test_delete
       end
 
       def get_schema
