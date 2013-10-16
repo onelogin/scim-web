@@ -28,7 +28,7 @@ class ApiTest < ActiveRecord::Base
 
   # call api_test.backgrounded.perform
   def perform
-    App.log.info "Processing!"
+    #App.log.info "Processing!"
   end
 end
 
