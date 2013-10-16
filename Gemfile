@@ -6,7 +6,6 @@ gem 'sass'
 gem "activerecord"
 gem "sinatra-activerecord"
 gem 'backgrounded'
-gem 'logging'
 
 gem 'pg'
 
