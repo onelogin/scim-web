@@ -86,94 +86,124 @@ module TestingHarness
   end
 
   class Tester
-    include HTTParty
-    @@debug_output = nil
-    @@schema = nil
-    @@current_test_resource_id = nil
 
-    def self.init(options)
-      self.format :json
-      self.headers   'Content-Type' => 'application/json'
-      #self.headers   'Authorization' => "apikey #{options[:apikey]}"
-      self.headers    'HTTP_APIKEY' => "#{options[:apikey]}"
-
-      uri = options[:hostname]
-
-      uri << options[:path] || "/scim/v1"
-      self.base_uri uri
-
+    class << self
+      def new(uri, token, *args)
+        Class.new(AbstractTester) { |klass|
+          klass.base_uri uri
+          klass.format   :json
+          klass.headers  'Content-Type' => 'application/json'
+          klass.headers  'HTTP_APIKEY' => token
+        }.new(*args)
+      end
     end
 
-    def self.get_schema
-      @@schema ||= self.get('/Schemas', debug_output: @@debug_output)
-    end
+    class AbstractTester
+      include HTTParty
 
-    def self.create_resource(options)
-      body = options[:user]
+      def initialize(opts)
+        @json_fixture = JSON.parse(opts[:json_fixture])
+        @debug        = $stdout if opts[:debug]
+      end
 
-      reponse = self.post('/Users', body: body.to_json, debug_output: @@debug_output)
-      @@current_test_resource_id = reponse.parsed_response['id']
-      reponse
-    end
+      def get_schema
+        @schema ||= self.class.get('/Schemas', :debug_output => @debug)
+      end
 
-    def self.update_resource(options)
-      id = @@current_test_resource_id || 99999999
-      url = "/Users/#{id}.json"
+      def create
+        body = @json_fixture['create']
+        reponse = self.class.post('/Users', :body =>  body.to_json, debug_output: @debug)
+        @resource_id = reponse.parsed_response['id']
+        reponse
+      end
 
-      body =  options[:user]
-      self.put(url, body: body.to_json, debug_output: @@debug_output)
-    end
+      def delete
+        id = @resource_id
+        delete_url = "/Users/#{id}.json"
+        self.class.delete(delete_url, :debug_output => @debug)
+      end
 
-    def self.delete_resource
-      id = @@current_test_resource_id
-      delete_url = "/Users/#{id}.json"
-      self.delete(delete_url, debug_output: @@debug_output)
-    end
+      def update
+        id = @resource_id
+        url = "/Users/#{id}.json"
+        body = @json_fixture['update']
+        self.class.put(url, :body => body.to_json, :debug_output => @debug)
+      end
 
+      def lookup(options={})
+        id = @resource_id
+        lookup_url = "/Users/#{id}.json"
+        self.class.get(lookup_url, :debug_output => @debug)
+      end
 
-    def self.debug(debug = false)
-      @@debug_output = $stdout if debug
-    end
-
-    def self.test_resource_creation(options={})
-      out = self.create_resource(:user => options[:user])
-      Validity.validate_resource_creation(out, options) # we'll see how to add the schema later
-    end
-
-    def self.test_resource_deletion(options={})
-      out = self.delete_resource
-      Validity.validate_resource_deletion(out, options)
-    end
-
-    def self.test_resource_lookup(options={})
-      id = @@current_test_resource_id || -1
-      lookup_url = "/Users/#{id}.json"
-      out = self.get(lookup_url, debug_output: @@debug_output)
-      Validity.validate_resource_fetch(out, 'userName', options)
-    end
-
-    def self.test_resource_listing(options= {})
-      if options[:filter]
-        out = self.get("/Users?attributes=email&filter=email%20eq%20example@testonelog.in", debug_output: @@debug_output)
-      else
-        out = self.get("/Users", debug_output: @@debug_output)
-        if options[:deleted]
-          options[:value] = "example@testonelog.in"
+      def list(options = {})
+        if options[:filter]
+          self.class.get("/Users?attributes=email&filter=email%20eq%20example@testonelog.in", :debug_output => @debug)
+        else
+          self.class.get("/Users", :debug_output =>  @debug)
+          #if options[:deleted]
+            #options[:value] = "example@testonelog.in"
+          #end
         end
       end
 
-      Validity.validate_listing(out, options)
-    end
-
-    def self.test_resource_search
-      email = 'example@testonelog.in'
-      search_url = "/Users?attributes=email&filter=" + CGI.escape("email eq #{email}")
-      self.get(search_url, debug_output: @@debug_output)
-    end
-
-    def self.test_resource_update(options={})
-      out = self.update_resource(:user => options[:user])
-      Validity.validate_resource_update(out, options)
     end
   end
+    #@@debug_output = nil
+    #@@schema = nil
+    #@@current_test_resource_id = nil
+
+    #attr_accessor :fixture_json
+
+
+
+
+
+
+
+    #def self.debug(debug = false)
+      #@@debug_output = $stdout if debug
+    #end
+
+    #def self.test_resource_creation(options={})
+      #out = self.create_resource(:user => options[:user])
+      #Validity.validate_resource_creation(out, options) # we'll see how to add the schema later
+    #end
+
+    #def self.test_resource_deletion(options={})
+      #out = self.delete_resource
+      #Validity.validate_resource_deletion(out, options)
+    #end
+
+    #def self.test_resource_lookup(options={})
+      #id = @@current_test_resource_id || -1
+      #lookup_url = "/Users/#{id}.json"
+      #out = self.get(lookup_url, debug_output: @@debug_output)
+      #Validity.validate_resource_fetch(out, 'userName', options)
+    #end
+
+    #def self.test_resource_listing(options= {})
+      #if options[:filter]
+        #out = self.get("/Users?attributes=email&filter=email%20eq%20example@testonelog.in", debug_output: @@debug_output)
+      #else
+        #out = self.get("/Users", debug_output: @@debug_output)
+        #if options[:deleted]
+          #options[:value] = "example@testonelog.in"
+        #end
+      #end
+
+      #Validity.validate_listing(out, options)
+    #end
+
+    #def self.test_resource_search
+      #email = 'example@testonelog.in'
+      #search_url = "/Users?attributes=email&filter=" + CGI.escape("email eq #{email}")
+      #self.get(search_url, debug_output: @@debug_output)
+    #end
+
+    #def self.test_resource_update(options={})
+      #out = self.update_resource(:user => options[:user])
+      #Validity.validate_resource_update(out, options)
+    #end
+  #end
 end
