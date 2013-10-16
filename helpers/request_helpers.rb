@@ -14,6 +14,6 @@ module RequestHelpers
     puts "port: #{port}"
 
     puts "from: #{from}"
-    "#{url_scheme}://#{host}{from}" == referer
+    "#{host}{from}" == referer
   end
 end
