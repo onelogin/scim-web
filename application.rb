@@ -10,6 +10,7 @@ require 'debugger' if development?
 
 require './environments'
 require './app'
+require './lib/testing_harness'
 
 
 require_relative './models/api_test.rb'

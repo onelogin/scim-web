@@ -7,6 +7,7 @@ gem "activerecord"
 gem "sinatra-activerecord"
 gem 'backgrounded'
 gem 'tux'
+gem 'httparty'
 
 gem 'pg'
 
