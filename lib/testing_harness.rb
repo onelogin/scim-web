@@ -1,10 +1,48 @@
 require 'httparty'
+require 'fileutils'
 
 module TestingHarness
-  class Validity
-    @@mandatory_fields = nil
 
-    def self.validate_listing(out, options= {})
+  class ReportWriter
+    def create_file(path, extension)
+      dir = File.dirname(path)
+
+      unless File.directory?(dir)
+        FileUtils.mkdir_p(dir)
+      end
+
+      path << ".#{extension}"
+
+      File.new(path, 'w')
+      path
+    end
+
+    def initialize(path)
+      @path = create_file(path, 'html')
+    end
+
+    def append(text)
+      File.open( @path, 'a+') { |f| f.write(text + "\n") }
+    end
+
+    def ok(text)
+      append("<p class='success'>#{text} Result: OK</p>")
+    end
+
+    def error(text)
+      append("<p class='error'>#{text} Result: ERROR </p>")
+    end
+  end
+
+  class Validity
+    attr_accessor :report
+
+    def initialize(opts = {})
+      path = opts[:filename] || 'reports/example'
+      @writer = ReportWriter.new(path)
+    end
+
+    def validate_listing(out, options= {})
       result = true
       response = out.parsed_response
       result = (out.code == 200)
@@ -23,24 +61,27 @@ module TestingHarness
       end
     end
 
-    def self.validate_resource_creation(out, options={})
+    def validate_resource_creation(out, options={})
       if options[:conflicted]
         out.code == 409 && response_has_errors?(out.parsed_response, '409')
       else
-        out.code == 201 #&& !out.headers['location'].nil? #&& mandatory_fields_present?(schema, out)
+        compliant = out.code == 201
+        #&& !out.headers['location'].nil? #&& mandatory_fields_present?(schema, out)
+        @writer.ok "Test: Create" if compliant
+        compliant
       end
     end
 
-    def self.mandatory_fields_present?(schema, out)
+    def mandatory_fields_present?(schema, out)
       mandatory_fields = get_mandatory_fields_from_schema(schema)
       mandatory_fields.all? {|field| !out.parsed_response[field].nil?}
     end
 
-    def self.get_mandatory_fields_from_schema(schema)
+    def get_mandatory_fields_from_schema(schema)
       @@mandatory_fields||= schema['attributes'].select {|attr| attr['required']}.map{|field| field['name']}
     end
 
-    def self.validate_resource_fetch(out, id_field, options={})
+    def validate_resource_fetch(out, id_field, options={})
       result = true
       response = out.parsed_response
 
@@ -54,28 +95,34 @@ module TestingHarness
         end
       end
 
+      @writer.ok "Test: Lookup."
+
       result
     end
 
-    def self.validate_resource_update(out, options={})
+    def validate_resource_update(out, options={})
       if options[:deleted]
         out.code == 404 && response_has_errors?(out.parsed_response)
       else
         response = out.parsed_response
-        out.code == 200 && !response.nil? && !response['id'].nil? && !response['name'].nil? && !response['userName'].nil?
+        compliant = out.code == 200 && !response.nil? && !response['id'].nil? && !response['name'].nil? && !response['userName'].nil?
+        @writer.ok "Test: Update" if compliant
+        compliant
       end
     end
 
 
-    def self.validate_resource_deletion(out, options = {})
+    def validate_resource_deletion(out, options = {})
       if options[:deleted]
         out.code == 404 && response_has_errors?(out.parsed_response)
       else
-        out.code == 200
+        compliant = out.code == 200
+        @writer.ok "Test: Create" if compliant
+        compliant
       end
     end
 
-    def self.response_has_errors?(response, error_code='404')
+    def response_has_errors?(response, error_code='404')
       begin
         errors = response['Errors']
         errors.first['code'] == error_code && !errors.first['description'].nil?
@@ -104,6 +151,7 @@ module TestingHarness
       def initialize(opts)
         @json_fixture = JSON.parse(opts[:json_fixture])
         @debug        = $stdout if opts[:debug]
+        @validator    = Validity.new
       end
 
       def get_schema
@@ -148,23 +196,23 @@ module TestingHarness
       end
 
       def test_create(options={})
-        Validity.validate_resource_creation(create, options) # we'll see how to add the schema later
+        @validator.validate_resource_creation(create, options) # we'll see how to add the schema later
       end
 
       def test_delete(options={})
-        Validity.validate_resource_deletion(delete, options)
+        @validator.validate_resource_deletion(delete, options)
       end
 
       def test_lookup(options={})
-        Validity.validate_resource_fetch(lookup, 'userName', options)
+        @validator.validate_resource_fetch(lookup, 'userName', options)
       end
 
       def test_update(options={})
-        Validity.validate_resource_update(update, options)
+        @validator.validate_resource_update(update, options)
       end
 
       def test_list(options={})
-        Validity.validate_listing(list, options)
+        @validator.validate_listing(list, options)
       end
     end
   end
