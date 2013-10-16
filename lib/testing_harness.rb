@@ -1,5 +1,28 @@
 require 'httparty'
 require 'fileutils'
+require 'pony'
+
+module Mailer
+  class TestsMailer
+    def self.send_message(params)
+      Pony.mail(
+        :from => "OneLogin" + "<support@onelogin.com>", :to => params[:to],
+        :subject => "Your API Test report results", :body => params[:message],
+        :port => '587',
+        :via => :smtp,
+        :headers => { 'Content-Type' => 'text/html' },
+        :via_options => {
+          :address => 'smtp.gmail.com',
+          :port => '587',
+          :enable_starttls_auto => true,
+          :user_name => '',
+          :password => '',
+          :authentication => :plain,
+          :domain => 'localhost.localdomain'
+      })
+    end
+  end
+end
 
 module TestingHarness
 
@@ -32,9 +55,19 @@ module TestingHarness
     def error(text)
       append("<p class='error'>#{text} Result: ERROR </p>")
     end
+
+    def read
+      f = File.open(@path, "r")
+      text = f.read
+      f.close
+
+      text
+    end
   end
 
   class Validity
+    attr_accessor :writer
+
     def initialize(opts = {})
       path = opts[:filename] || 'reports/example'
       @writer = ReportWriter.new(path)
@@ -157,6 +190,8 @@ module TestingHarness
         test_lookup
         test_update
         test_delete
+
+        Mailer::TestsMailer.send_message(:to => 'ignacio.delamadrid@gmail.com', :message => @validator.writer.read)
       end
 
       def get_schema
