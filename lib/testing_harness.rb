@@ -147,53 +147,28 @@ module TestingHarness
         end
       end
 
+      def test_create(options={})
+        Validity.validate_resource_creation(create, options) # we'll see how to add the schema later
+      end
+
+      def test_delete(options={})
+        Validity.validate_resource_deletion(delete, options)
+      end
+
+      def test_lookup(options={})
+        Validity.validate_resource_fetch(lookup, 'userName', options)
+      end
+
+      def test_update(options={})
+        Validity.validate_resource_update(update, options)
+      end
+
+      def test_list(options={})
+        Validity.validate_listing(list, options)
+      end
     end
   end
-    #@@debug_output = nil
-    #@@schema = nil
-    #@@current_test_resource_id = nil
 
-    #attr_accessor :fixture_json
-
-
-
-
-
-
-
-    #def self.debug(debug = false)
-      #@@debug_output = $stdout if debug
-    #end
-
-    #def self.test_resource_creation(options={})
-      #out = self.create_resource(:user => options[:user])
-      #Validity.validate_resource_creation(out, options) # we'll see how to add the schema later
-    #end
-
-    #def self.test_resource_deletion(options={})
-      #out = self.delete_resource
-      #Validity.validate_resource_deletion(out, options)
-    #end
-
-    #def self.test_resource_lookup(options={})
-      #id = @@current_test_resource_id || -1
-      #lookup_url = "/Users/#{id}.json"
-      #out = self.get(lookup_url, debug_output: @@debug_output)
-      #Validity.validate_resource_fetch(out, 'userName', options)
-    #end
-
-    #def self.test_resource_listing(options= {})
-      #if options[:filter]
-        #out = self.get("/Users?attributes=email&filter=email%20eq%20example@testonelog.in", debug_output: @@debug_output)
-      #else
-        #out = self.get("/Users", debug_output: @@debug_output)
-        #if options[:deleted]
-          #options[:value] = "example@testonelog.in"
-        #end
-      #end
-
-      #Validity.validate_listing(out, options)
-    #end
 
     #def self.test_resource_search
       #email = 'example@testonelog.in'
@@ -201,9 +176,5 @@ module TestingHarness
       #self.get(search_url, debug_output: @@debug_output)
     #end
 
-    #def self.test_resource_update(options={})
-      #out = self.update_resource(:user => options[:user])
-      #Validity.validate_resource_update(out, options)
-    #end
   #end
 end
