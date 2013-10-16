@@ -1,12 +1,8 @@
-puts "Environment: #{Sinatra::Application.environment.to_s}"
-
 configure :development do
   config = YAML::load(File.open('config/database.yml'))
   environment = Sinatra::Application.environment.to_s
 
-  puts "Configuration: " + config[environment].to_s
   ActiveRecord::Base.establish_connection(config[environment])
-
   set :show_exceptions, true
 end
 

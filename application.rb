@@ -11,7 +11,6 @@ require 'debugger' if development?
 require './config/environments'
 require './config/initializers/app'
 require './config/initializers/backgrounded'
-require './config/initializers/logging'
 
 
 require_relative './models/api_test.rb'
