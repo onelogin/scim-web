@@ -1,0 +1,7 @@
+development:
+  adapter: postgresql
+  host: localhost
+  username: postgres
+  password: postgres
+  database: scim_dev
+  encoding: utf-8

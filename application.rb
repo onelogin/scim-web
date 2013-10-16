@@ -1,12 +1,18 @@
 require 'rubygems'
+
 require 'sinatra'
 require 'haml'
 require 'yaml'
-require 'sinatra/reloader' if development?
 require "sinatra/activerecord"
-require './environments'
-
+require 'backgrounded'
+require 'sinatra/reloader' if development?
 require 'debugger' if development?
+
+require './config/environments'
+require './config/initializers/app'
+require './config/initializers/backgrounded'
+require './config/initializers/logging'
+
 
 require_relative './models/api_test.rb'
 require_relative './helpers/application_helper.rb'
