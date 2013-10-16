@@ -32,7 +32,7 @@ not_found { haml :not_found }
 before do
   case request_path(request)
   when '/test/queued'
-    redirect_to_root unless http_referer_equals?('/testing_harness', request)
+    #redirect_to_root unless http_referer_equals?('/testing_harness', request)
   end
 end
 
