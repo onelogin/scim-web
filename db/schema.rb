@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131013193029) do
+ActiveRecord::Schema.define(version: 20131017161055) do
 
   create_table "api_tests", force: true do |t|
     t.string "token"
     t.string "base_url"
     t.text   "json_fixture"
+    t.string "email"
   end
 
 end

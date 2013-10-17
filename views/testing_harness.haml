@@ -62,4 +62,11 @@
         = render_error_message(@api_test, :fixtures_file)
         %p(class="#{ error_for?(@api_test, :fixtures_file) ? 'invalid' : '' }")
           <input type="file"  name='api_test[fixtures_file]'>
+    .box
+      %h3 Introduce the email where the report will be sent
+
+      .row.gap-bottom
+        = render_error_message(@api_test, :email)
+        %p(class="#{ error_for?(@api_test, :email) ? 'invalid' : '' }")
+          <input placeholder="email" name='api_test[email]' value="#{@api_test.email}">
     %button.large.success(type='submit') Validate my API!

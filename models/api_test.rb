@@ -1,11 +1,12 @@
 class ApiTest < ActiveRecord::Base
   attr_accessor :fixtures_file
 
-  validates_presence_of :token, :base_url, :fixtures_file
+  validates_presence_of :token, :base_url, :fixtures_file, :email
   validates_format_of   :token, :with => /\w{8,}/, :message => "The token must be formed of at least 8 characters"
   validates_format_of   :base_url, 
                         :with => /^(http(?:s)?\:\/\/[a-zA-Z0-9\-]+(?:\.[a-zA-Z0-9\-]+)*\.[a-zA-Z]{2,6}(?:\/?|(?:\/[\w\-]+)*)(?:\/?|\/\w+\.[a-zA-Z]{2,4}(?:\?[\w]+\=[\w\-]+)?)?(?:\&[\w]+\=[\w\-]+)*)$/i, :multiline => true,
                         :message => 'Not a valid URL'
+  validates_format_of   :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/, :on => :create
 
 
   def can_be_performed?
@@ -35,6 +36,7 @@ class ApiTest < ActiveRecord::Base
   def test
     tester = TestingHarness::Tester.new base_url, token,
                                         :json_fixture => json_fixture,
+                                        :email => email,
                                         :debug => false,
                                         :report_filename => "reports/#{id}"
     tester.backgrounded.execute

@@ -183,6 +183,7 @@ module TestingHarness
         @json_fixture = JSON.parse(opts[:json_fixture])
         @debug        = $stdout if opts[:debug]
         @validator    = Validity.new(:filename => opts[:report_filename])
+        @email        = opts[:email]
       end
 
       def execute
@@ -191,7 +192,7 @@ module TestingHarness
         test_update
         test_delete
 
-        Mailer::TestsMailer.send_message(:to => 'ignacio.delamadrid@gmail.com', :message => @validator.writer.read)
+        Mailer::TestsMailer.send_message(:to => @email, :message => @validator.writer.read)
       end
 
       def get_schema

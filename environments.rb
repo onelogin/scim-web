@@ -1,6 +1,15 @@
 configure :development do
-  set :database, 'postgres://postgres:postgres@localhost:5432/scim_dev'
+  #set :database, 'postgres://postgres:postgres@localhost:5432/scim_dev'
   set :show_exceptions, true
+
+  ActiveRecord::Base.establish_connection(
+    :adapter  => 'postgresql',
+    :host     => 'localhost',
+    :username => 'postgres',
+    :password => 'postgres',
+    :database => 'scim_dev',
+    :encoding => 'utf8'
+  )
 end
 
 configure :production do

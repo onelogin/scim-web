@@ -9,7 +9,6 @@ require 'sinatra/reloader' if development?
 require 'debugger' if development?
 
 require './environments'
-require './app'
 require './lib/testing_harness'
 
 
@@ -62,7 +61,8 @@ post '/check_api' do
   if @api_test.valid? && @api_test.can_be_performed?
     @api_test.save
 
-    @api_test.perform
+    @api_test.test
+
     redirect to('/test/queued')
   else
     haml :testing_harness, :layout => :app_layout

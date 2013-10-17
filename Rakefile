@@ -1,5 +1,2 @@
-task :environment do
-  require './application'
-end
-
+require './application'
 require "sinatra/activerecord/rake"
